@@ -58,6 +58,20 @@ def check(spec):
     """
     problems = []
     # TODO: your code here
+    seen = {}  # 创建一个字典，用来记录 已经见过的IP地址 -> 主机名
+    # 遍历 spec["hosts"]。以下写法兼容列表或字典格式的 hosts：
+    hosts = spec["hosts"].items() if isinstance(spec["hosts"], dict) else [(h["name"], h) for h in spec["hosts"]]
+    for host_name, host_info in hosts:
+        # 检查每个主机的 ip 和 ipv6 地址（如果有的话）
+        for key in ("ip", "ipv6"):
+            if key in host_info and host_info[key]:
+                # 去掉 '/' 及其后面的前缀长度（例如把 10.0.0.2/24 变成 10.0.0.2）
+                addr = host_info[key].split("/")[0]
+                # 如果这个地址已经在字典里，说明发生了冲突，添加到 problems 列表
+                if addr in seen:
+                    problems.append(f"PROBLEM: {host_name} and {seen[addr]} both use {addr}")
+                else:
+                    seen[addr] = host_name
     return problems
 
 
