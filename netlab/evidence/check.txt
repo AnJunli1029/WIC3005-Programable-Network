@@ -1,0 +1,4 @@
+PROBLEM: h2 and h1 both use 10.16.0.1
+PROBLEM: h2 and h1 both use fd00:2616::1
+PROBLEM: link [h6, s9] refers to unknown node 's9'
+Fix the description and try again.
