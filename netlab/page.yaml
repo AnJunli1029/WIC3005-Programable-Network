@@ -8,22 +8,63 @@ repository: https://github.com/AnJunli1029/WIC3005-Programale-Networking
 answers:
   planes:
     question: "Where are the data, control and management planes in your network?"
-    answer: ""
+    answer: |
+      In my network, the management plane is my topology.yaml file and the Python scripts (build_topo.py and make_page.py). They check my data, create the 3 switches (s1 to s3) and 6 hosts (h1 to h6), and set the IPv4 (10.16.0.0/24) and IPv6 (fd00:2616::/64) addresses.
+
+      Because controller=None is used in build_topo.py, there is no big central controller. Instead, the control plane works automatically on each device using MAC learning on switches, and ARP and Neighbour Discovery on hosts (as seen in evidence/neigh.txt).
+
+      The data plane is inside the Linux kernel of each switch and host. It uses the MAC table (evidence/macs.txt) and neighbour table (evidence/neigh.txt) to forward real packets across the 8 links during pingall.
+
   learning:
     question: "How did your switches learn which port leads to each host? Use your MAC table evidence."
-    answer: ""
+    answer: |
+      My switches learned the ports by looking at the source MAC address of packets when they came into a port during pingall.
+
+      In my evidence/macs.txt from switch s1, port 1 learned h1's MAC address (00:00:00:00:00:01) and port 2 learned h2's MAC address (00:00:00:00:00:02), because h1 and h2 are directly connected to s1.
+
+      Port 3 of s1 is connected to switch s2, so s1 learned that the MAC addresses for h3 (00:00:00:00:00:03), h4 (00:00:00:00:00:04), h5 (00:00:00:00:00:05), and h6 (00:00:00:00:00:06) are all behind port 3.
+
   kind:
     question: "Which of the four kinds of programmability is this assignment (a network described as data, then built and documented by scripts)? Why isn't it any of the other three?"
-    answer: ""
+    answer: |
+      This assignment is management-plane programmability. We write the network design as data in topology.yaml, and then use Python scripts to check it, build the network, and make the web page automatically.
+
+      It is not control-plane programmability because we set controller=None and only use basic LinuxBridge switches without an SDN controller like OpenFlow.
+
+      It is also not data-plane programmability (like P4) or device-level programming, because we did not change how the switches process packets inside the kernel.
+
   two_am:
     question: "Week 1's 2 a.m. change on 40 switches: what would be different if those switches were described like your network?"
-    answer: ""
+    answer: |
+      If the 40 switches were described as data like my topology.yaml, the engineer would not need to type commands into 40 switches one by one at 2 a.m. and make typing mistakes.
+
+      Instead, we just edit the YAML file once and run check() first. As shown in my evidence/check.txt, the script can quickly catch mistakes like duplicate IPs (10.16.0.1 and fd00:2616::1) or a wrong link to s9 before the network is even built.
+
+      After passing the check, the script can update all switches in the same way and update docs/index.html automatically, which is much safer and faster.
+
   model:
     question: "What's the difference between your network's data model and its serialisation? Use YAML and JSON as the example."
-    answer: ""
+    answer: |
+      The data model is the actual structure and meaning of my network data, such as having student_id_last4 ("2616"), a list of switches (s1 to s3), a list of hosts with IPs, and a list of links.
+
+      Serialisation is just the file format we use to save this data into a text file. For example, topology.yaml uses spaces and dashes, while topology.json uses brackets and quotes.
+
+      Even though YAML and JSON look different in the file, the load() function in build_topo.py reads both of them into the exact same Python dictionary, so they share the same data model.
+
   check:
     question: "Why is it better to catch bad data in check() than with pingall? What did IPv6 notice about a duplicate address that IPv4 didn't?"
-    answer: ""
+    answer: |
+      Catching bad data in check() is better because it stops errors before building the network and tells us the exact problem. In evidence/check.txt, it clearly told me that h2 and h1 used the same IP (10.16.0.1 and fd00:2616::1) and s9 did not exist, whereas pingall only shows that packets are dropped after the network is already running.
+
+      In evidence/dad.txt, when I gave h1's address to h2, IPv6 used Duplicate Address Detection (DAD) to find the conflict and marked fd00:2616::1/64 as "dadfailed tentative" so h2 would not use it.
+
+      However, IPv4 did not notice the duplicate address at all and just added 10.16.0.1/24 as a normal secondary address on h2-eth0, which can cause network problems later.
+
   git:
     question: "What does your Git history give you that copying files into folders named topology-v2-final wouldn't?"
-    answer: ""
+    answer: |
+      Git history shows me the exact lines I changed in every file, when I changed them, and my commit messages explaining why, instead of having many messy folders like topology-v2-final.
+
+      With Git, I only keep one clean folder, so build_topo.py and make_page.py always use the right topology.yaml file without confusion.
+
+      Also, if I make a mistake that breaks my network, Git lets me easily go back to an older working version and push my final code to GitHub Pages.

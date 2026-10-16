@@ -54,24 +54,30 @@ def check_mine(spec):
 def check(spec):
     """Return a list of problems in the description (an empty list means it looks fine).
 
-    Week 2 task: report any IP address that is used by more than one host.
+    Week 2 task: report any IP address that is used by more than one host,
+    and verify every link names a switch or host that exists.
     """
     problems = []
-    # TODO: your code here
-    seen = {}  # 创建一个字典，用来记录 已经见过的IP地址 -> 主机名
-    # 遍历 spec["hosts"]。以下写法兼容列表或字典格式的 hosts：
-    hosts = spec["hosts"].items() if isinstance(spec["hosts"], dict) else [(h["name"], h) for h in spec["hosts"]]
-    for host_name, host_info in hosts:
-        # 检查每个主机的 ip 和 ipv6 地址（如果有的话）
+    
+    # 1. check for duplicate IP addresses among hosts
+    seen = {}
+    for host in spec["hosts"]:
+        host_name = host["name"]
         for key in ("ip", "ipv6"):
-            if key in host_info and host_info[key]:
-                # 去掉 '/' 及其后面的前缀长度（例如把 10.0.0.2/24 变成 10.0.0.2）
-                addr = host_info[key].split("/")[0]
-                # 如果这个地址已经在字典里，说明发生了冲突，添加到 problems 列表
+            if key in host and host[key]:
+                addr = host[key].split("/")[0]
                 if addr in seen:
-                    problems.append(f"PROBLEM: {host_name} and {seen[addr]} both use {addr}")
+                    problems.append(f"{host_name} and {seen[addr]} both use {addr}")
                 else:
                     seen[addr] = host_name
+
+    # 2. check that every link refers to a valid node (switch or host)
+    valid_nodes = set(spec["switches"]) | {h["name"] for h in spec["hosts"]}
+    for a, b in spec["links"]:
+        for node in (a, b):
+            if node not in valid_nodes:
+                problems.append(f"link [{a}, {b}] refers to unknown node '{node}'")
+
     return problems
 
 
