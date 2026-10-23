@@ -52,31 +52,40 @@ def check_mine(spec):
 
 
 def check(spec):
-    """Return a list of problems in the description (an empty list means it looks fine).
-
-    Week 2 task: report any IP address that is used by more than one host,
-    and verify every link names a switch or host that exists.
-    """
+    """Report duplicate host IP addresses and unknown link endpoints."""
     problems = []
-    
-    # 1. check for duplicate IP addresses among hosts
+
+    # Parse addresses so equivalent IPv6 spellings compare equally.
     seen = {}
     for host in spec["hosts"]:
         host_name = host["name"]
         for key in ("ip", "ipv6"):
-            if key in host and host[key]:
-                addr = host[key].split("/")[0]
-                if addr in seen:
-                    problems.append(f"{host_name} and {seen[addr]} both use {addr}")
-                else:
-                    seen[addr] = host_name
+            if not host.get(key):
+                continue
 
-    # 2. check that every link refers to a valid node (switch or host)
-    valid_nodes = set(spec["switches"]) | {h["name"] for h in spec["hosts"]}
+            try:
+                addr = ipaddress.ip_interface(host[key]).ip
+            except ValueError:
+                # check_mine() reports invalid address formats.
+                continue
+
+            if addr in seen:
+                problems.append(
+                    f"{host_name} and {seen[addr]} both use {addr}"
+                )
+            else:
+                seen[addr] = host_name
+
+    # Check that every link endpoint names an existing node.
+    valid_nodes = set(spec["switches"]) | {
+        host["name"] for host in spec["hosts"]
+    }
     for a, b in spec["links"]:
         for node in (a, b):
             if node not in valid_nodes:
-                problems.append(f"link [{a}, {b}] refers to unknown node '{node}'")
+                problems.append(
+                    f"link [{a}, {b}] refers to unknown node '{node}'"
+                )
 
     return problems
 
