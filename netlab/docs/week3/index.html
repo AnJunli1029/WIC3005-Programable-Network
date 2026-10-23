@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network 2616: routed, from data</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 52rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.55; color: #1f2937; }
+  h1 { font-size: 1.6rem; margin-bottom: .2rem; } h2 { margin-top: 2.2rem; border-bottom: 1px solid #e5e7eb; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; margin-bottom: 1rem; } th, td { border-bottom: 1px solid #e5e7eb; padding: .35rem .5rem; text-align: left; }
+  pre { background: #111827; color: #f3f4f6; padding: .8rem; border-radius: .4rem; overflow-x: auto; font-size: .82rem; }
+  pre.mermaid { background: none; color: inherit; } pre.missing { background: #fef2f2; color: #991b1b; }
+  .meta, .file { color: #6b7280; font-size: .85rem; } code { font-size: .88em; }
+</style>
+</head>
+<body>
+<p class="meta"><a href="../">← Week 2: my network, built from data</a></p>
+<h1>My routed network, from data</h1>
+<p class="meta">Student ID ending 2616 · generated from <code>network.yaml</code> by <code>make_page3.py</code> on 2026-10-23</p>
+<p id="summary">4 routers, 4 LANs and 4 router links, with 11 static routes, on <code>10.16.0.0/16</code>.
+Every route was checked for loops and missing routes before it reached a router.</p>
+<p>Repository: <a id="repository" href="https://github.com/AnJunli1029/WIC3005-Programable-Network">https://github.com/AnJunli1029/WIC3005-Programable-Network</a></p>
+
+<h2>The network</h2>
+<h3>LANs</h3>
+<section id="lans"><table><thead><tr><th>LAN</th><th>Network</th><th>Router (.1)</th><th>Host (.10)</th></tr></thead><tbody><tr><td>lan-h1</td><td><code>10.16.1.0/24</code></td><td>r1</td><td>h1 <code>10.16.1.10</code></td></tr><tr><td>lan-h2</td><td><code>10.16.32.0/24</code></td><td>r2</td><td>h2 <code>10.16.32.10</code></td></tr><tr><td>lan-h3</td><td><code>10.16.64.0/24</code></td><td>r3</td><td>h3 <code>10.16.64.10</code></td></tr><tr><td>lan-h4</td><td><code>10.16.96.0/24</code></td><td>r4</td><td>h4 <code>10.16.96.10</code></td></tr></tbody></table></section>
+<h3>Router links</h3>
+<section id="links"><table><thead><tr><th>Link</th><th>Network</th></tr></thead><tbody><tr><td>r1 — r2</td><td><code>10.16.12.0/30</code></td></tr><tr><td>r2 — r3</td><td><code>10.16.12.4/30</code></td></tr><tr><td>r3 — r4</td><td><code>10.16.12.8/30</code></td></tr><tr><td>r1 — r4</td><td><code>10.16.12.12/30</code></td></tr></tbody></table></section>
+<h3>Diagram</h3>
+<pre class="mermaid" id="diagram">graph LR
+  h1[&quot;h1&lt;br&gt;10.16.1.10&quot;] --- r1((r1))
+  h2[&quot;h2&lt;br&gt;10.16.32.10&quot;] --- r2((r2))
+  h3[&quot;h3&lt;br&gt;10.16.64.10&quot;] --- r3((r3))
+  h4[&quot;h4&lt;br&gt;10.16.96.10&quot;] --- r4((r4))
+  r1((r1)) ---|10.16.12.0/30| r2((r2))
+  r2((r2)) ---|10.16.12.4/30| r3((r3))
+  r3((r3)) ---|10.16.12.8/30| r4((r4))
+  r1((r1)) ---|10.16.12.12/30| r4((r4))</pre>
+
+<h2>Routing tables</h2>
+<section id="routing-tables"><h3>r1</h3><table><thead><tr><th>Destination</th><th>Next hop</th></tr></thead><tbody><tr><td>10.16.12.0/30</td><td>directly connected</td></tr><tr><td>10.16.12.12/30</td><td>directly connected</td></tr><tr><td>10.16.1.0/24</td><td>directly connected</td></tr><tr><td>10.16.32.0/24</td><td>10.16.12.2</td></tr><tr><td>10.16.64.0/18</td><td>10.16.12.14</td></tr></tbody></table>
+<h3>r2</h3><table><thead><tr><th>Destination</th><th>Next hop</th></tr></thead><tbody><tr><td>10.16.12.0/30</td><td>directly connected</td></tr><tr><td>10.16.12.4/30</td><td>directly connected</td></tr><tr><td>10.16.32.0/24</td><td>directly connected</td></tr><tr><td>10.16.1.0/24</td><td>10.16.12.1</td></tr><tr><td>10.16.64.0/24</td><td>10.16.12.6</td></tr><tr><td>10.16.96.0/24</td><td>10.16.12.6</td></tr></tbody></table>
+<h3>r3</h3><table><thead><tr><th>Destination</th><th>Next hop</th></tr></thead><tbody><tr><td>10.16.12.4/30</td><td>directly connected</td></tr><tr><td>10.16.12.8/30</td><td>directly connected</td></tr><tr><td>10.16.64.0/24</td><td>directly connected</td></tr><tr><td>10.16.96.0/24</td><td>10.16.12.10</td></tr><tr><td>10.16.32.0/24</td><td>10.16.12.5</td></tr><tr><td>10.16.1.0/24</td><td>10.16.12.5</td></tr></tbody></table>
+<h3>r4</h3><table><thead><tr><th>Destination</th><th>Next hop</th></tr></thead><tbody><tr><td>10.16.12.8/30</td><td>directly connected</td></tr><tr><td>10.16.12.12/30</td><td>directly connected</td></tr><tr><td>10.16.96.0/24</td><td>directly connected</td></tr><tr><td>10.16.64.0/24</td><td>10.16.12.9</td></tr><tr><td>10.16.1.0/24</td><td>10.16.12.13</td></tr><tr><td>10.16.32.0/24</td><td>10.16.12.13</td></tr></tbody></table></section>
+
+<h2>Evidence from the running network</h2>
+<section id="evidence"><h3>Every router&#x27;s routing table: ip route</h3>
+<p class="file">evidence3/routes.txt</p>
+<pre id="evidence-routes">== r1
+10.16.1.0/24 dev r1-eth0 proto kernel scope link src 10.16.1.1 
+10.16.12.0/30 dev r1-eth1 proto kernel scope link src 10.16.12.1 
+10.16.12.12/30 dev r1-eth2 proto kernel scope link src 10.16.12.13 
+10.16.32.0/24 via 10.16.12.2 dev r1-eth1 
+10.16.64.0/18 via 10.16.12.14 dev r1-eth2 
+== r2
+10.16.1.0/24 via 10.16.12.1 dev r2-eth1 
+10.16.12.0/30 dev r2-eth1 proto kernel scope link src 10.16.12.2 
+10.16.12.4/30 dev r2-eth2 proto kernel scope link src 10.16.12.5 
+10.16.32.0/24 dev r2-eth0 proto kernel scope link src 10.16.32.1 
+10.16.64.0/24 via 10.16.12.6 dev r2-eth2 
+10.16.96.0/24 via 10.16.12.6 dev r2-eth2 
+== r3
+10.16.1.0/24 via 10.16.12.5 dev r3-eth1 
+10.16.12.4/30 dev r3-eth1 proto kernel scope link src 10.16.12.6 
+10.16.12.8/30 dev r3-eth2 proto kernel scope link src 10.16.12.9 
+10.16.32.0/24 via 10.16.12.5 dev r3-eth1 
+10.16.64.0/24 dev r3-eth0 proto kernel scope link src 10.16.64.1 
+10.16.96.0/24 via 10.16.12.10 dev r3-eth2 
+== r4
+10.16.1.0/24 via 10.16.12.13 dev r4-eth2 
+10.16.12.8/30 dev r4-eth1 proto kernel scope link src 10.16.12.10 
+10.16.12.12/30 dev r4-eth2 proto kernel scope link src 10.16.12.14 
+10.16.32.0/24 via 10.16.12.13 dev r4-eth2 
+10.16.64.0/24 via 10.16.12.9 dev r4-eth1 
+10.16.96.0/24 dev r4-eth0 proto kernel scope link src 10.16.96.1</pre>
+<h3>From one host to every other: traceroute</h3>
+<p class="file">evidence3/traces.txt</p>
+<pre id="evidence-traces">traceroute to 10.16.32.10 (10.16.32.10), 30 hops max, 60 byte packets
+ 1  10.16.1.1  2.316 ms  0.008 ms  0.002 ms
+ 2  10.16.12.2  0.455 ms  0.006 ms  0.003 ms
+ 3  10.16.32.10  0.531 ms  0.003 ms  0.002 ms
+traceroute to 10.16.64.10 (10.16.64.10), 30 hops max, 60 byte packets
+ 1  10.16.1.1  0.218 ms  0.021 ms  0.008 ms
+ 2  10.16.12.14  0.194 ms  0.006 ms  0.003 ms
+ 3  10.16.12.6  0.159 ms  0.007 ms  0.004 ms
+ 4  10.16.64.10  0.489 ms  0.006 ms  0.005 ms
+traceroute to 10.16.96.10 (10.16.96.10), 30 hops max, 60 byte packets
+ 1  10.16.1.1  0.124 ms  0.006 ms  0.003 ms
+ 2  10.16.12.14  0.083 ms  0.006 ms  0.004 ms
+ 3  10.16.96.10  0.521 ms  0.007 ms  0.005 ms
+traceroute to 10.16.1.10 (10.16.1.10), 30 hops max, 60 byte packets
+ 1  10.16.32.1  0.130 ms  0.005 ms  0.010 ms
+ 2  10.16.12.1  0.597 ms  0.043 ms  0.017 ms
+ 3  10.16.1.10  0.034 ms  0.004 ms  0.004 ms
+traceroute to 10.16.64.10 (10.16.64.10), 30 hops max, 60 byte packets
+ 1  10.16.32.1  0.154 ms  0.004 ms  0.007 ms
+ 2  10.16.12.6  0.063 ms  0.003 ms  0.006 ms
+ 3  10.16.64.10  1.084 ms  0.007 ms  0.003 ms
+traceroute to 10.16.96.10 (10.16.96.10), 30 hops max, 60 byte packets
+ 1  10.16.32.1  0.095 ms  0.005 ms  0.003 ms
+ 2  10.16.12.6  0.081 ms  0.006 ms  0.004 ms
+ 3  10.16.12.14  0.540 ms  0.012 ms  0.006 ms
+ 4  10.16.96.10  0.030 ms  0.011 ms  0.006 ms
+traceroute to 10.16.1.10 (10.16.1.10), 30 hops max, 60 byte packets
+ 1  10.16.64.1  0.410 ms  0.007 ms  0.002 ms
+ 2  10.16.12.5  0.058 ms  0.004 ms  0.002 ms
+ 3  10.16.12.13  0.533 ms  0.005 ms  0.004 ms
+ 4  10.16.1.10  0.079 ms  0.004 ms  0.005 ms
+traceroute to 10.16.32.10 (10.16.32.10), 30 hops max, 60 byte packets
+ 1  10.16.64.1  0.237 ms  0.007 ms  0.008 ms
+ 2  10.16.12.5  0.130 ms  0.006 ms  0.004 ms
+ 3  10.16.32.10  0.060 ms  0.005 ms  0.010 ms
+traceroute to 10.16.96.10 (10.16.96.10), 30 hops max, 60 byte packets
+ 1  10.16.64.1  0.184 ms  0.006 ms  0.008 ms
+ 2  10.16.12.10  0.556 ms  0.009 ms  0.004 ms
+ 3  10.16.96.10  0.057 ms  0.006 ms  0.004 ms
+traceroute to 10.16.1.10 (10.16.1.10), 30 hops max, 60 byte packets
+ 1  10.16.96.1  0.172 ms  0.017 ms  0.021 ms
+ 2  10.16.12.13  0.090 ms  0.006 ms  0.004 ms
+ 3  10.16.1.10  0.080 ms  0.006 ms  0.017 ms
+traceroute to 10.16.32.10 (10.16.32.10), 30 hops max, 60 byte packets
+ 1  10.16.96.1  0.170 ms  0.009 ms  0.012 ms
+ 2  10.16.12.13  0.102 ms  0.005 ms  0.004 ms
+ 3  10.16.12.5  0.114 ms  0.010 ms  0.006 ms
+ 4  10.16.32.10  0.047 ms  0.007 ms  0.010 ms
+traceroute to 10.16.64.10 (10.16.64.10), 30 hops max, 60 byte packets
+ 1  10.16.96.1  0.105 ms  0.007 ms  0.004 ms
+ 2  10.16.12.9  1.112 ms  0.010 ms  0.005 ms
+ 3  10.16.64.10  0.056 ms  0.007 ms  0.005 ms</pre>
+<h3>Your summary route at work: ip route get</h3>
+<p class="file">evidence3/summary.txt</p>
+<pre id="evidence-summary">10.16.64.10 via 10.16.12.14 dev r1-eth2 src 10.16.12.13 uid 0 
+    cache 
+10.16.96.10 via 10.16.12.14 dev r1-eth2 src 10.16.12.13 uid 0 
+    cache</pre>
+<h3>A link goes down: what static routes do</h3>
+<p class="file">evidence3/failure.txt</p>
+<pre id="evidence-failure">traceroute to 10.16.64.10 (10.16.64.10), 5 hops max, 60 byte packets
+ 1  10.16.1.1  0.114 ms !N
+RTNETLINK answers: Network is unreachable</pre>
+<h3>check_paths() stopping a loop and a missing route</h3>
+<p class="file">evidence3/check.txt</p>
+<pre id="evidence-check">PROBLEM: h2 -&gt; h4: routing loop at r2
+PROBLEM: h3 -&gt; h4: routing loop at r3
+Fix the description and try again: nothing was built.
+PROBLEM: h1 -&gt; h3: missing route at r4 for 10.16.64.10
+PROBLEM: h4 -&gt; h3: missing route at r4 for 10.16.64.10
+Fix the description and try again: nothing was built.</pre></section>
+
+<h2>What I learned</h2>
+<section id="answers"><section id="answer-design"><h3>Describe your design: why these routers, LANs and links, and how you chose the addresses.</h3><p>I chose four routers (r1, r2, r3, and r4) because the assignment requires at least four routers. Each router connects to one LAN with one host. I connected the routers in a loop to provide a redundant path, so there are two possible physical paths between routers. I used separate /24 subnets for the LANs: 10.16.1.0/24, 10.16.32.0/24, 10.16.64.0/24, and 10.16.96.0/24. For router-to-router links, I used four /30 subnets starting from 10.16.12.0/30 to 10.16.12.12/30. Each LAN router uses .1 and each host uses .10.</p></section>
+<section id="answer-summary"><h3>Which route summarises several LANs? Which networks does it cover, why is it correct, and what else would it attract if you added a network inside its range?</h3><p>I configured a summary route 10.16.64.0/18 on r1, with the next hop 10.16.12.14 (r4). This route covers two LANs: 10.16.64.0/24 (h3) and 10.16.96.0/24 (h4). It is correct because the /18 prefix covers addresses from 10.16.64.0 to 10.16.127.255, but does not cover all four LANs. If I added another network inside this range, traffic to that network would also match the summary route and be forwarded to r4, unless a more specific route existed. This could cause incorrect forwarding if r4 did not know how to reach the new network.</p></section>
+<section id="answer-failure"><h3>When you took a link down, what happened, and why couldn&#x27;t your routes recover even though another path existed? What would have recovered?</h3><p>When I took down the link between r1 and r4, the traceroute from h1 to h3 failed and showed Network Unreachable. This happened because r1 used a static summary route through r4, and that next hop became unreachable. Although another physical path existed through r2 and r3, the static routes could not automatically find it. A dynamic routing protocol such as OSPF could detect the link failure and calculate an alternative path.</p></section>
+<section id="answer-control_plane"><h3>In your network, what was the control plane? Who worked out the routes, and what does that mean for a network of 40 routers?</h3><p>In my network, the control plane was responsible for deciding the routes that packets should follow. I worked out the static routes manually and defined them in network.yaml. The Python script then applied these routes to the routers. If the network had 40 routers, manually configuring and maintaining all the static routes would be more complicated and time-consuming. It would also be easier to make mistakes. Using a dynamic routing protocol such as OSPF would make route management and recovery from failures more efficient.</p></section></section>
+
+<script type="application/json" id="network-data">{
+  "student_id_last4": "2616",
+  "routers": [
+    "r1",
+    "r2",
+    "r3",
+    "r4"
+  ],
+  "lans": [
+    {
+      "name": "lan-h1",
+      "network": "10.16.1.0/24",
+      "router": "r1",
+      "host": "h1"
+    },
+    {
+      "name": "lan-h2",
+      "network": "10.16.32.0/24",
+      "router": "r2",
+      "host": "h2"
+    },
+    {
+      "name": "lan-h3",
+      "network": "10.16.64.0/24",
+      "router": "r3",
+      "host": "h3"
+    },
+    {
+      "name": "lan-h4",
+      "network": "10.16.96.0/24",
+      "router": "r4",
+      "host": "h4"
+    }
+  ],
+  "links": [
+    [
+      "r1",
+      "r2",
+      "10.16.12.0/30"
+    ],
+    [
+      "r2",
+      "r3",
+      "10.16.12.4/30"
+    ],
+    [
+      "r3",
+      "r4",
+      "10.16.12.8/30"
+    ],
+    [
+      "r1",
+      "r4",
+      "10.16.12.12/30"
+    ]
+  ],
+  "routes": {
+    "r1": [
+      {
+        "to": "10.16.32.0/24",
+        "via": "10.16.12.2"
+      },
+      {
+        "to": "10.16.64.0/18",
+        "via": "10.16.12.14"
+      }
+    ],
+    "r2": [
+      {
+        "to": "10.16.1.0/24",
+        "via": "10.16.12.1"
+      },
+      {
+        "to": "10.16.64.0/24",
+        "via": "10.16.12.6"
+      },
+      {
+        "to": "10.16.96.0/24",
+        "via": "10.16.12.6"
+      }
+    ],
+    "r3": [
+      {
+        "to": "10.16.96.0/24",
+        "via": "10.16.12.10"
+      },
+      {
+        "to": "10.16.32.0/24",
+        "via": "10.16.12.5"
+      },
+      {
+        "to": "10.16.1.0/24",
+        "via": "10.16.12.5"
+      }
+    ],
+    "r4": [
+      {
+        "to": "10.16.64.0/24",
+        "via": "10.16.12.9"
+      },
+      {
+        "to": "10.16.1.0/24",
+        "via": "10.16.12.13"
+      },
+      {
+        "to": "10.16.32.0/24",
+        "via": "10.16.12.13"
+      }
+    ]
+  }
+}</script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true });
+</script>
+</body>
+</html>

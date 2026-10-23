@@ -1,0 +1,19 @@
+# page3.yaml: the words on your Week 3 page. make_page3.py puts each answer under its question.
+# A few sentences each, in your own words, about YOUR network and YOUR evidence.
+# Leave a blank line between paragraphs. Never put your name or full student ID here.
+
+repository: https://github.com/AnJunli1029/WIC3005-Programable-Network
+
+answers:
+  design:
+    question: "Describe your design: why these routers, LANs and links, and how you chose the addresses."
+    answer: "I chose four routers (r1, r2, r3, and r4) because the assignment requires at least four routers. Each router connects to one LAN with one host. I connected the routers in a loop to provide a redundant path, so there are two possible physical paths between routers. I used separate /24 subnets for the LANs: 10.16.1.0/24, 10.16.32.0/24, 10.16.64.0/24, and 10.16.96.0/24. For router-to-router links, I used four /30 subnets starting from 10.16.12.0/30 to 10.16.12.12/30. Each LAN router uses .1 and each host uses .10."
+  summary:
+    question: "Which route summarises several LANs? Which networks does it cover, why is it correct, and what else would it attract if you added a network inside its range?"
+    answer: "I configured a summary route 10.16.64.0/18 on r1, with the next hop 10.16.12.14 (r4). This route covers two LANs: 10.16.64.0/24 (h3) and 10.16.96.0/24 (h4). It is correct because the /18 prefix covers addresses from 10.16.64.0 to 10.16.127.255, but does not cover all four LANs. If I added another network inside this range, traffic to that network would also match the summary route and be forwarded to r4, unless a more specific route existed. This could cause incorrect forwarding if r4 did not know how to reach the new network."
+  failure:
+    question: "When you took a link down, what happened, and why couldn't your routes recover even though another path existed? What would have recovered?"
+    answer: "When I took down the link between r1 and r4, the traceroute from h1 to h3 failed and showed Network Unreachable. This happened because r1 used a static summary route through r4, and that next hop became unreachable. Although another physical path existed through r2 and r3, the static routes could not automatically find it. A dynamic routing protocol such as OSPF could detect the link failure and calculate an alternative path."
+  control_plane:
+    question: "In your network, what was the control plane? Who worked out the routes, and what does that mean for a network of 40 routers?"
+    answer: "In my network, the control plane was responsible for deciding the routes that packets should follow. I worked out the static routes manually and defined them in network.yaml. The Python script then applied these routes to the routers. If the network had 40 routers, manually configuring and maintaining all the static routes would be more complicated and time-consuming. It would also be easier to make mistakes. Using a dynamic routing protocol such as OSPF would make route management and recovery from failures more efficient."

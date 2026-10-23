@@ -1,0 +1,71 @@
+# network.yaml: your routed network, as data. A starting point to change into your own design.
+#
+#   python3 build_routed.py network.yaml      checks it, then builds it in Mininet
+#   python3 make_page3.py network.yaml        checks it, then writes docs/week3/index.html
+#
+# Replace NNNN and every NN (see "Your addresses"). Don't put your full student ID here.
+#
+# Each LAN has one router (.1 on the LAN) and one host (.10).
+# On each link, the first router named is .1 and the second is .2.
+# This starting point is the lab's network without r3. It works, but it doesn't meet the
+# assignment's requirements: that's your job.
+
+student_id_last4: "2616"
+
+routers: [r1, r2, r3, r4]
+
+lans:
+  - name: lan-h1
+    network: 10.16.1.0/24
+    router: r1
+    host: h1
+  - name: lan-h2
+    network: 10.16.32.0/24
+    router: r2
+    host: h2
+  - name: lan-h3
+    network: 10.16.64.0/24
+    router: r3
+    host: h3
+  - name: lan-h4
+    network: 10.16.96.0/24
+    router: r4
+    host: h4
+
+links:
+  - [r1, r2, 10.16.12.0/30]
+  - [r2, r3, 10.16.12.4/30]
+  - [r3, r4, 10.16.12.8/30]
+  - [r1, r4, 10.16.12.12/30]
+routes:
+  r1:
+    - to: 10.16.32.0/24 # r1 - > r2 - h2
+      via: 10.16.12.2
+  #  - to: 10.16.64.0/24 # r1 - > r3 - h3
+  #    via: 10.16.12.2
+  #  - to: 10.16.96.0/24 # r1 - > r4 - h4
+  #    via: 10.16.12.14
+    - to: 10.16.64.0/18 # r1 - > r4 - h3/h4
+      via: 10.16.12.14
+  r2:
+    - to: 10.16.1.0/24 # r2 - > r1 - h1
+      via: 10.16.12.1
+    - to: 10.16.64.0/24 # r2 - > r3 - h3
+      via: 10.16.12.6
+    - to: 10.16.96.0/24 # r2 - > r4 - h4
+      via: 10.16.12.6
+  r3:
+    - to: 10.16.96.0/24 # r3 - > r4 - h4
+      via: 10.16.12.10
+    - to: 10.16.32.0/24 # r3 - > r2 - h2
+      via: 10.16.12.5
+    - to: 10.16.1.0/24 # r3 - > r1 - h1
+      via: 10.16.12.5
+  r4:
+    - to: 10.16.64.0/24 # r4 - > r3 - h3
+      via: 10.16.12.9
+    - to: 10.16.1.0/24 # r4 - > r1 - h1
+      via: 10.16.12.13
+    - to: 10.16.32.0/24 # r4 - > r2 - h2
+      via: 10.16.12.13
+    

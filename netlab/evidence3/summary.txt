@@ -1,0 +1,4 @@
+10.16.64.10 via 10.16.12.14 dev r1-eth2 src 10.16.12.13 uid 0 
+    cache 
+10.16.96.10 via 10.16.12.14 dev r1-eth2 src 10.16.12.13 uid 0 
+    cache 
