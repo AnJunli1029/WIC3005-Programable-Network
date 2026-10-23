@@ -24,7 +24,7 @@ answers:
 
       The MAC addresses of h3, h4, h5 and h6 were all learned on port 3. This matches my topology because port 3 connects s1 to s2, and all four hosts are reached through that link. A single switch port can therefore lead to several hosts through other switches.
 
-   kind:
+  kind:
     question: "Which of the four kinds of programmability is this assignment (a network described as data, then built and documented by scripts)? Why isn't it any of the other three?"
     answer: |
       This assignment demonstrates automated configuration management, category (d). I describe the intended network in topology.yaml, then use Python scripts to validate the description, create the Mininet network and generate documentation. The programmable part is the workflow that turns configuration data into a running network and its documentation.
