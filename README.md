@@ -1,4 +1,4 @@
-# WIC3005 — Programable Network
+# WIC2005 — Programable Network
 
 Week 2 Lab: https://anjunli1029.github.io/WIC3005-Programable-Network/
 
