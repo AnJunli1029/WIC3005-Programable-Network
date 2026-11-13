@@ -1,10 +1,10 @@
 # WIC2005 — Programable Network
 
-Week 2 Lab: https://anjunli1029.github.io/WIC3005-Programable-Network/
+## Week 2 Lab: https://anjunli1029.github.io/WIC3005-Programable-Network/
 
-Week 3 Lab: https://anjunli1029.github.io/WIC3005-Programable-Network/week3/
+## Week 3 Lab: https://anjunli1029.github.io/WIC3005-Programable-Network/week3/
 
-Week 4 Lab:
+## Week 4 Lab:
 
 1. Why did the first firewall rule in Step 3 have no effect, and why does blocking h1 → h3 also break h3 → h1?
 - The first firewall rule had no effect because the drop rule and the existing forwarding rule had the same default priority (32768). Both rules matched the packets with the same priority, and OpenFlow does not guarantee which rule wins. In my experiment, the forwarding rule was used, so the drop rule had no effect. After increasing the drop rule's priority to 40000, the firewall successfully blocked traffic from h1 to h3.
@@ -29,7 +29,7 @@ Week 4 Lab:
 
 - Therefore, I would prefer secure mode to maintain network security, even though it may temporarily affect connectivity.
 
-Week 6 Lab:
+## Week 6 Lab:
 
 **AI Use**
 
