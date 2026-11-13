@@ -37,7 +37,7 @@ Function: It give me some instruction for the assignment, e.g. code. And help me
 
 Chat Link: [Lab 5 Assignment with Chat GPT](https://chatgpt.com/share/6af419f4-5030-83ec-8ce2-9302fa5e841d)
 
-## Week 6 Lab:
+## Week 6 Lab: https://anjunli1029.github.io/WIC3005-Programable-Network/week6/
 
 **AI Use**
 
