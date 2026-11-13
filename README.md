@@ -54,4 +54,4 @@ I designed my own network, ran the experiments, collected the evidence, and chec
 
 I reviewed the AI suggestions and understand the work I submitted.
 
-The chat link: https://chatgpt.com/share/6af6c22b-8ef8-83ec-9c43-1af1fd7e08e7
+The chat link: [Lab 6 Assignment with Chat GPT](https://chatgpt.com/share/6af6c22b-8ef8-83ec-9c43-1af1fd7e08e7)
