@@ -45,3 +45,5 @@ ChatGPT helped me to:
 I designed my own network, ran the experiments, collected the evidence, and checked the results myself.
 
 I reviewed the AI suggestions and understand the work I submitted.
+
+The chat link: https://chatgpt.com/share/6af6c22b-8ef8-83ec-9c43-1af1fd7e08e7
