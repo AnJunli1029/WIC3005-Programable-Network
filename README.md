@@ -28,3 +28,20 @@ Week 4 Lab:
 - Standalone mode provides better availability because the switch falls back to normal learning-switch behavior when the controller is disconnected. However, this can bypass controller-installed firewall rules and security policies, which creates security risks.
 
 - Therefore, I would prefer secure mode to maintain network security, even though it may temporarily affect connectivity.
+
+Week 6 Lab:
+
+**AI Use**
+
+I used **ChatGPT (OpenAI)** to help me with my WIC2005 labs.
+
+ChatGPT helped me to:
+- Understand networking concepts, such as OpenFlow, P4, VXLAN, VTEP, VNI, and MTU.
+- Understand the lab instructions and explain Python code.
+- Check my network configuration and lab commands.
+- Understand and analyse my experiment results.
+- Improve the English in my lab reports.
+
+I designed my own network, ran the experiments, collected the evidence, and checked the results myself.
+
+I reviewed the AI suggestions and understand the work I submitted.
