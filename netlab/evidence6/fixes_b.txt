@@ -1,0 +1,27 @@
+== fix B: underlay MTU 9000
+PING 10.16.16.11 (10.16.16.11) 1472(1500) bytes of data.
+1480 bytes from 10.16.16.11: icmp_seq=1 ttl=64 time=2.04 ms
+
+--- 10.16.16.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 2.038/2.038/2.038/0.000 ms
+PING 10.16.16.11 (10.16.16.11) 1473(1501) bytes of data.
+ping: local error: message too long, mtu=1500
+
+--- 10.16.16.11 ping statistics ---
+1 packets transmitted, 0 received, +1 errors, 100% packet loss, time 1ms
+
+Connecting to host 10.16.16.11, port 5201
+[  5] local 10.16.16.10 port 52662 connected to 10.16.16.11 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   997 MBytes  8.35 Gbits/sec    0    419 KBytes       
+[  5]   1.00-2.00   sec   775 MBytes  6.50 Gbits/sec    0    419 KBytes       
+[  5]   2.00-3.00   sec   865 MBytes  7.25 Gbits/sec    0    419 KBytes       
+[  5]   3.00-4.00   sec   834 MBytes  7.00 Gbits/sec    0    419 KBytes       
+[  5]   4.00-5.00   sec   938 MBytes  7.86 Gbits/sec    0    419 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-5.00   sec  4.76 GBytes  8.17 Gbits/sec    0             sender
+[  5]   0.00-5.00   sec  4.76 GBytes  8.17 Gbits/sec                  receiver
+
+iperf Done.

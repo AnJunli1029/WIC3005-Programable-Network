@@ -1,0 +1,46 @@
+# page6.yaml: the words on your Week 6 page. make_page6.py puts each answer under its question.
+# A few sentences each, in your own words, about YOUR overlay and YOUR evidence.
+# Leave a blank line between paragraphs. Don't put your name or your full student ID in this file.
+
+repository: https://github.com/AnJunli1029/WIC3005-Programable-Network.git
+
+answers:
+  design:
+    question: "Describe your design: hypervisors, tenants, VNIs and addresses. Which tenants overlap, and why did you place each VM where you did?"
+    answer: "My design has four hypervisors, hv1 to hv4, and two tenants, Campus and Office. The underlay network is 10.16.0.0/24. The hypervisor addresses are 10.16.0.1, 10.16.0.2, 10.16.0.3 and 10.16.0.4, respectively.
+
+      Campus uses VNI 116. Campus1 is on hv1 with IP 10.16.16.10, campus2 is on hv2 with IP 10.16.16.11, and campus3 is on hv3 with IP 10.16.16.12. I placed them on three hypervisors to test communication across the underlay.
+
+      Office uses VNI 216. Office1 is on hv1 with IP 10.16.16.10, office2 is on hv3 with IP 10.16.16.11, and office3 is on hv4 with IP 10.16.16.12. I added hv4 to test a fourth hypervisor. Both hv1 and hv3 host VMs from both tenants, so I can test isolation on shared hypervisors as well as communication across hypervisors.
+
+      Both tenants use 10.16.16.0/24, so their VM addresses overlap. Their different VNIs and separate bridges keep their virtual networks apart."
+  isolation:
+    question: "Two of your VMs have the same IP address. Using your evidence, explain how a ping reaches the right one — and what would have to go wrong for one tenant to see another's traffic."
+    answer: "Campus2 and office2 both use 10.16.16.11. When campus1 pings this address, its ARP request stays in the Campus network. The VXLAN packet uses VNI 116, so the remote VTEP delivers it to the Campus bridge and campus2 answers.
+
+      In my test, all three pings from campus1 succeeded. Its ip neigh output showed campus2's MAC address, 02:00:00:74:00:0b. At the same time, tcpdump on office2 captured 0 packets. When office1 pinged the same IP, it received a reply and learned office2's different MAC address, 02:00:00:d8:00:0b. This evidence shows isolation during these tests.
+
+      Traffic could reach the wrong tenant if a VM interface was connected to the wrong bridge, or if the VNI-to-bridge settings joined the two tenant networks by mistake."
+  flood_learn:
+    question: "Using your evidence, explain what was flooded, to which hypervisors, and what each VTEP learned. With 50 hypervisors in one VNI, how many copies would one broadcast need — and how would EVPN change that?"
+    answer: "When campus1 on hv1 first pinged campus2 on hv2, it sent an ARP broadcast to find the MAC address for 10.16.16.11. The hv1 VTEP sent a VXLAN copy to hv2 at 10.16.0.2 and another to hv3 at 10.16.0.3. These are the other hypervisors in the Campus VNI. The capture on hv3 showed the VXLAN ARP request from hv1, even though campus2 was on hv2.
+
+      After the ping, the forwarding database on hv1 showed campus2's MAC, 02:00:00:74:00:0b, at VTEP 10.16.0.2. On hv3, it showed campus1's MAC, 02:00:00:74:00:0a, at VTEP 10.16.0.1. These entries show how VTEPs learned remote MAC-to-VTEP mappings from received traffic. Known unicast traffic can then go directly to the correct VTEP.
+
+      With 50 participating hypervisors, head-end replication needs 49 copies for one broadcast, one for each other VTEP. EVPN can use BGP to share MAC, IP and VTEP information in the control plane. This reduces unknown unicast flooding, and ARP suppression can reduce some ARP broadcasts. It does not remove every broadcast: traffic that still needs flooding may still require 49 copies with head-end replication."
+  mtu:
+    question: "Compare your two MTU fixes using your measurements. Which would you choose for a data centre, what does each cost, and who has to change what?"
+    answer: "In the black-hole test, both the tenant and underlay MTUs were 1500 bytes. VXLAN adds about 50 bytes of overhead, so a full-size tenant packet needs more space on the underlay. A normal ping succeeded, but a 1472-byte ping payload had 100% loss. The largest successful payload was 1422 bytes and the smallest failed payload was 1423 bytes. The iperf3 result was 0 bits/sec with four TCP retransmissions.
+
+      For Fix A, I lowered the tenant MTU to 1450 and kept the underlay MTU at 1500. A 1422-byte payload succeeded, while the sender rejected 1423 bytes as too long. Iperf3 measured 7.78 Gbits/sec with no retransmissions. The VM and relevant overlay interfaces need the smaller MTU. This avoids changes to the underlay, but tenant packets must be smaller and carry more relative overhead.
+
+      For Fix B, I raised the underlay MTU to 9000 and kept the tenant MTU at 1500. A 1472-byte payload succeeded, while the sender rejected 1473 bytes as too long. Iperf3 measured 8.17 Gbits/sec with no retransmissions. The network operator must ensure that hypervisor interfaces and the whole underlay path, including switch ports, support and use a sufficient MTU. This keeps the standard tenant MTU but requires coordinated network changes.
+
+      I would choose Fix A for this data centre design because it is simpler to deploy without changing the whole underlay. Fix B is also suitable if the full underlay supports jumbo frames. Its higher measured speed in this test does not prove it is always faster."
+  p4:
+    question: "If your hypervisors' VTEPs were P4 switches running the lecture's vtep.p4, what would have to fill the vtep_encap table, and how? What would replace flood-and-learn?"
+    answer: "A control-plane controller must fill and update the vtep_encap table, for example through P4Runtime. In the lecture's program, the table matches the ingress port and destination Ethernet MAC address exactly. The controller needs to know the tenant and destination VM location, then install an entry with the encap action and the required tunnel and forwarding parameters, such as the VNI, VTEP addresses, outer MAC addresses and output port.
+
+      For example, the controller can install a Campus entry for campus2's MAC, 02:00:00:74:00:0b, using VNI 116 and remote VTEP 10.16.0.2. An Office entry for office2's MAC, 02:00:00:d8:00:0b, uses VNI 216 and remote VTEP 10.16.0.3. The controller should update entries when VM locations change.
+
+      An EVPN control plane can use BGP to distribute VM MAC and IP addresses and their VTEP locations. A controller can use this information to program the P4 tables, replacing data-plane flood-and-learn for these mappings. ARP suppression can also reduce some broadcasts. Broadcast and other traffic that still needs flooding require a separate replication or suppression mechanism."
