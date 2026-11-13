@@ -31,6 +31,12 @@
 
 ## Week 5 Lab: https://github.com/AnJunli1029/p4-lab/pull/1
 
+AI Tool: Chat GPT
+
+Function: It give me some instruction for the assignment, e.g. code. And help me to understand why need some code and told me some codes functions
+
+Chat Link: [Lab 5 Assignment with Chat GPT](https://chatgpt.com/share/6af419f4-5030-83ec-8ce2-9302fa5e841d)
+
 ## Week 6 Lab:
 
 **AI Use**
