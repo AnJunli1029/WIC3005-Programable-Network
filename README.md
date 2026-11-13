@@ -29,6 +29,8 @@
 
 - Therefore, I would prefer secure mode to maintain network security, even though it may temporarily affect connectivity.
 
+## Week 5 Lab: https://github.com/AnJunli1029/p4-lab/pull/1
+
 ## Week 6 Lab:
 
 **AI Use**
