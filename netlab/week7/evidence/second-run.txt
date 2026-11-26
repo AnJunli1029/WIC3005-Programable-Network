@@ -1,0 +1,168 @@
+Chaos settings
+{
+  "lose_responses": 0.3,
+  "errors_503": 0.2
+}
+
+Audit before second run
+{
+  "writes": 9,
+  "items": [
+    {
+      "seq": 1,
+      "time": "11:03:28",
+      "method": "PUT",
+      "path": "/api/v1/vlans/30",
+      "status": 201,
+      "change": "created VLAN 30 guests"
+    },
+    {
+      "seq": 2,
+      "time": "11:03:28",
+      "method": "PUT",
+      "path": "/api/v1/vlans/40",
+      "status": 201,
+      "change": "created VLAN 40 CCTV"
+    },
+    {
+      "seq": 3,
+      "time": "11:03:36",
+      "method": "PUT",
+      "path": "/api/v1/vlans/50",
+      "status": 201,
+      "change": "created VLAN 50 Door"
+    },
+    {
+      "seq": 4,
+      "time": "11:03:37",
+      "method": "PUT",
+      "path": "/api/v1/vlans/60",
+      "status": 201,
+      "change": "created VLAN 60 Windows"
+    },
+    {
+      "seq": 5,
+      "time": "11:03:43",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 1: deny 10.16.30.0/24 \u2192 10.16.20.0/24 tcp/22"
+    },
+    {
+      "seq": 6,
+      "time": "11:03:43",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 2: permit 10.16.10.0/24 \u2192 10.16.20.0/24 tcp/443"
+    },
+    {
+      "seq": 7,
+      "time": "11:03:44",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 3: permit 10.16.40.0/24 \u2192 10.16.20.0/24 tcp/443"
+    },
+    {
+      "seq": 8,
+      "time": "11:03:44",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 4: deny 10.16.30.0/24 \u2192 10.16.50.0/24 any"
+    },
+    {
+      "seq": 9,
+      "time": "11:03:44",
+      "method": "DELETE",
+      "path": "/api/v1/vlans/99",
+      "status": 204,
+      "change": "deleted VLAN 99"
+    }
+  ]
+}
+
+Second sync
+logged in as netops
+Plan is empty. No changes needed.
+Verified. API matches intent.
+
+Audit after second run
+{
+  "writes": 9,
+  "items": [
+    {
+      "seq": 1,
+      "time": "11:03:28",
+      "method": "PUT",
+      "path": "/api/v1/vlans/30",
+      "status": 201,
+      "change": "created VLAN 30 guests"
+    },
+    {
+      "seq": 2,
+      "time": "11:03:28",
+      "method": "PUT",
+      "path": "/api/v1/vlans/40",
+      "status": 201,
+      "change": "created VLAN 40 CCTV"
+    },
+    {
+      "seq": 3,
+      "time": "11:03:36",
+      "method": "PUT",
+      "path": "/api/v1/vlans/50",
+      "status": 201,
+      "change": "created VLAN 50 Door"
+    },
+    {
+      "seq": 4,
+      "time": "11:03:37",
+      "method": "PUT",
+      "path": "/api/v1/vlans/60",
+      "status": 201,
+      "change": "created VLAN 60 Windows"
+    },
+    {
+      "seq": 5,
+      "time": "11:03:43",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 1: deny 10.16.30.0/24 \u2192 10.16.20.0/24 tcp/22"
+    },
+    {
+      "seq": 6,
+      "time": "11:03:43",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 2: permit 10.16.10.0/24 \u2192 10.16.20.0/24 tcp/443"
+    },
+    {
+      "seq": 7,
+      "time": "11:03:44",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 3: permit 10.16.40.0/24 \u2192 10.16.20.0/24 tcp/443"
+    },
+    {
+      "seq": 8,
+      "time": "11:03:44",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 4: deny 10.16.30.0/24 \u2192 10.16.50.0/24 any"
+    },
+    {
+      "seq": 9,
+      "time": "11:03:44",
+      "method": "DELETE",
+      "path": "/api/v1/vlans/99",
+      "status": 204,
+      "change": "deleted VLAN 99"
+    }
+  ]
+}

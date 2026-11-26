@@ -1,0 +1,20 @@
+logged in as netops
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+401 Unauthorized. Logging in again.
+logged in as netops
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+401 Unauthorized. Logging in again.
+logged in as netops
+216 devices read (the API says 216), in 37 requests; saved devices.json
+  johor: 54
+  kl-hq: 54
+  penang: 54
+  pj-dc: 54

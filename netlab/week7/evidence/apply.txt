@@ -1,0 +1,190 @@
+{
+  "lose_responses": 0.3,
+  "errors_503": 0.2
+}
+logged in as netops
+Plan has 9 changes.
+  Create VLAN 30 (guests)
+  Create VLAN 40 (CCTV)
+  Create VLAN 50 (Door)
+  Create VLAN 60 (Windows)
+  Create ACL deny 10.16.30.0/24 to 10.16.20.0/24 (tcp/22) [guests-no-ssh]
+  Create ACL permit 10.16.10.0/24 to 10.16.20.0/24 (tcp/443) [users-to-servers-https]
+  Create ACL permit 10.16.40.0/24 to 10.16.20.0/24 (tcp/443) [cctv-to-servers-https]
+  Create ACL deny 10.16.30.0/24 to 10.16.50.0/24 (any) [guests-no-door-access]
+  Delete VLAN 99 (old-guest)
+Create VLAN 30 (guests)
+Create VLAN 40 (CCTV)
+ConnectionError. Retrying in 1.19s.
+503 Service Unavailable. Retrying in 2.08s.
+ConnectionError. Retrying in 4.19s.
+Create VLAN 50 (Door)
+Create VLAN 60 (Windows)
+503 Service Unavailable. Retrying in 1.14s.
+ConnectionError. Retrying in 2.06s.
+ConnectionError. Retrying in 4.08s.
+Create ACL deny 10.16.30.0/24 to 10.16.20.0/24 (tcp/22) [guests-no-ssh]
+Create ACL permit 10.16.10.0/24 to 10.16.20.0/24 (tcp/443) [users-to-servers-https]
+ConnectionError. Retrying in 1.19s.
+Create ACL permit 10.16.40.0/24 to 10.16.20.0/24 (tcp/443) [cctv-to-servers-https]
+Create ACL deny 10.16.30.0/24 to 10.16.50.0/24 (any) [guests-no-door-access]
+Delete VLAN 99 (old-guest)
+429 Too Many Requests. Retrying in 1s.
+Verified. API matches intent.
+
+Audit after apply
+{
+  "writes": 9,
+  "items": [
+    {
+      "seq": 1,
+      "time": "11:03:28",
+      "method": "PUT",
+      "path": "/api/v1/vlans/30",
+      "status": 201,
+      "change": "created VLAN 30 guests"
+    },
+    {
+      "seq": 2,
+      "time": "11:03:28",
+      "method": "PUT",
+      "path": "/api/v1/vlans/40",
+      "status": 201,
+      "change": "created VLAN 40 CCTV"
+    },
+    {
+      "seq": 3,
+      "time": "11:03:36",
+      "method": "PUT",
+      "path": "/api/v1/vlans/50",
+      "status": 201,
+      "change": "created VLAN 50 Door"
+    },
+    {
+      "seq": 4,
+      "time": "11:03:37",
+      "method": "PUT",
+      "path": "/api/v1/vlans/60",
+      "status": 201,
+      "change": "created VLAN 60 Windows"
+    },
+    {
+      "seq": 5,
+      "time": "11:03:43",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 1: deny 10.16.30.0/24 \u2192 10.16.20.0/24 tcp/22"
+    },
+    {
+      "seq": 6,
+      "time": "11:03:43",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 2: permit 10.16.10.0/24 \u2192 10.16.20.0/24 tcp/443"
+    },
+    {
+      "seq": 7,
+      "time": "11:03:44",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 3: permit 10.16.40.0/24 \u2192 10.16.20.0/24 tcp/443"
+    },
+    {
+      "seq": 8,
+      "time": "11:03:44",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 4: deny 10.16.30.0/24 \u2192 10.16.50.0/24 any"
+    },
+    {
+      "seq": 9,
+      "time": "11:03:44",
+      "method": "DELETE",
+      "path": "/api/v1/vlans/99",
+      "status": 204,
+      "change": "deleted VLAN 99"
+    }
+  ]
+}
+
+GET /api/v1/vlans
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "default"
+    },
+    {
+      "id": 10,
+      "name": "users"
+    },
+    {
+      "id": 20,
+      "name": "servers"
+    },
+    {
+      "id": 30,
+      "name": "guests"
+    },
+    {
+      "id": 40,
+      "name": "CCTV"
+    },
+    {
+      "id": 50,
+      "name": "Door"
+    },
+    {
+      "id": 60,
+      "name": "Windows"
+    }
+  ],
+  "next": null
+}
+
+GET /api/v1/acl/entries
+{
+  "items": [
+    {
+      "id": 1,
+      "action": "deny",
+      "src": "10.16.30.0/24",
+      "dst": "10.16.20.0/24",
+      "protocol": "tcp",
+      "port": 22,
+      "description": "guests-no-ssh"
+    },
+    {
+      "id": 2,
+      "action": "permit",
+      "src": "10.16.10.0/24",
+      "dst": "10.16.20.0/24",
+      "protocol": "tcp",
+      "port": 443,
+      "description": "users-to-servers-https"
+    },
+    {
+      "id": 3,
+      "action": "permit",
+      "src": "10.16.40.0/24",
+      "dst": "10.16.20.0/24",
+      "protocol": "tcp",
+      "port": 443,
+      "description": "cctv-to-servers-https"
+    },
+    {
+      "id": 4,
+      "action": "deny",
+      "src": "10.16.30.0/24",
+      "dst": "10.16.50.0/24",
+      "protocol": "any",
+      "port": null,
+      "description": "guests-no-door-access"
+    }
+  ],
+  "next": null
+}

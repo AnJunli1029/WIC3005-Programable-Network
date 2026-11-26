@@ -1,0 +1,162 @@
+Command: curl -i http://api:8000/api/v1/vlans
+HTTP/1.1 401 Unauthorized
+Server: labapi/1.0 Python/3.12.16
+Date: Sun, 22 Nov 2026 12:51:19 GMT
+Content-Type: application/json
+Content-Length: 119
+WWW-Authenticate: Bearer realm="labapi"
+
+{
+  "error": "authentication required: log in at POST /api/v1/auth/token, then send 'Authorization: Bearer <token>'"
+}
+Command: curl -i http://api:8000/api/v1/vlans -H "Authorization: Bearer $TOKEN"
+HTTP/1.1 200 OK
+Server: labapi/1.0 Python/3.12.16
+Date: Sun, 22 Nov 2026 12:52:20 GMT
+Content-Type: application/json
+Content-Length: 247
+
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "default"
+    },
+    {
+      "id": 10,
+      "name": "users"
+    },
+    {
+      "id": 20,
+      "name": "servers"
+    },
+    {
+      "id": 99,
+      "name": "old-guest"
+    }
+  ],
+  "next": null
+}
+GET /api/v1/vlans/77
+Command: curl -si http://api:8000/api/v1/vlans/77 -H "Authorization: Bearer $TOKEN"
+HTTP/1.1 404 Not Found
+Server: labapi/1.0 Python/3.12.16
+Date: Sun, 22 Nov 2026 13:12:16 GMT
+Content-Type: application/json
+Content-Length: 35
+
+{
+  "error": "VLAN 77 not found"
+}
+POST /api/v1/vlans/10
+Command: curl -si -X POST http://api:8000/api/v1/vlans/10 -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"id":10,"name":"users"}'
+HTTP/1.1 405 Method Not Allowed
+Server: labapi/1.0 Python/3.12.16
+Date: Sun, 22 Nov 2026 13:12:21 GMT
+Content-Type: application/json
+Content-Length: 54
+Allow: GET, PUT, PATCH, DELETE
+
+{
+  "error": "POST is not allowed on a single VLAN"
+}
+POST /api/v1/vlans - Invalid JSON
+Command: curl -si -X POST http://api:8000/api/v1/vlans -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"id": 30, "name": guest}'
+HTTP/1.1 400 Bad Request
+Server: labapi/1.0 Python/3.12.16
+Date: Sun, 22 Nov 2026 13:12:32 GMT
+Content-Type: application/json
+Content-Length: 52
+
+{
+  "error": "the request body is not valid JSON"
+}
+PUT /api/v1/vlans/5000
+Command: curl -si -X PUT http://api:8000/api/v1/vlans/5000 -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"id":5000,"name":"test"}'
+HTTP/1.1 422 Unprocessable Entity
+Server: labapi/1.0 Python/3.12.16
+Date: Sun, 22 Nov 2026 13:12:40 GMT
+Content-Type: application/json
+Content-Length: 57
+
+{
+  "error": "id must be a VLAN number from 1 to 4094"
+}
+POST /api/v1/vlans - Duplicate VLAN 10
+Command: curl -si -X POST http://api:8000/api/v1/vlans -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"id":10,"name":"users"}'
+HTTP/1.1 409 Conflict
+Server: labapi/1.0 Python/3.12.16
+Date: Sun, 22 Nov 2026 13:12:48 GMT
+Content-Type: application/json
+Content-Length: 63
+
+{
+  "error": "VLAN 10 already exists: use PUT to replace it"
+}
+GET /api/v1/vlans/77
+Command: curl -si http://api:8000/api/v1/vlans/77 -H "Authorization: Bearer $TOKEN"
+HTTP/1.1 404 Not Found
+Server: labapi/1.0 Python/3.12.16
+Date: Thu, 26 Nov 2026 10:10:19 GMT
+Content-Type: application/json
+Content-Length: 35
+
+{
+  "error": "VLAN 77 not found"
+}
+POST /api/v1/vlans/10
+Command: curl -si -X POST http://api:8000/api/v1/vlans/10 -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"id":10,"name":"users"}'
+HTTP/1.1 405 Method Not Allowed
+Server: labapi/1.0 Python/3.12.16
+Date: Thu, 26 Nov 2026 10:10:23 GMT
+Content-Type: application/json
+Content-Length: 54
+Allow: GET, PUT, PATCH, DELETE
+
+{
+  "error": "POST is not allowed on a single VLAN"
+}
+POST /api/v1/vlans - Invalid JSON
+Command: curl -si -X POST http://api:8000/api/v1/vlans -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"id": 30, "name": guest}'
+HTTP/1.1 400 Bad Request
+Server: labapi/1.0 Python/3.12.16
+Date: Thu, 26 Nov 2026 10:10:31 GMT
+Content-Type: application/json
+Content-Length: 52
+
+{
+  "error": "the request body is not valid JSON"
+}
+PUT /api/v1/vlans/5000
+Command: curl -si -X PUT http://api:8000/api/v1/vlans/5000 -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"id":5000,"name":"test"}'
+HTTP/1.1 422 Unprocessable Entity
+Server: labapi/1.0 Python/3.12.16
+Date: Thu, 26 Nov 2026 10:10:36 GMT
+Content-Type: application/json
+Content-Length: 57
+
+{
+  "error": "id must be a VLAN number from 1 to 4094"
+}
+POST /api/v1/vlans - Duplicate VLAN 10
+Command: curl -si -X POST http://api:8000/api/v1/vlans -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"id":10,"name":"users"}'
+HTTP/1.1 409 Conflict
+Server: labapi/1.0 Python/3.12.16
+Date: Thu, 26 Nov 2026 10:10:41 GMT
+Content-Type: application/json
+Content-Length: 63
+
+{
+  "error": "VLAN 10 already exists: use PUT to replace it"
+}
+PUT /api/v1/vlans/30 - Viewer Token
+Command: curl -si -X PUT http://api:8000/api/v1/vlans/30 -H "Authorization: Bearer $VIEWER_TOKEN" -H 'Content-Type: application/json' -d '{"id":30,"name":"guest"}'
+HTTP/1.1 403 Forbidden
+Server: labapi/1.0 Python/3.12.16
+Date: Thu, 26 Nov 2026 10:10:58 GMT
+Content-Type: application/json
+Content-Length: 46
+
+{
+  "error": "viewer has a read-only token"
+}

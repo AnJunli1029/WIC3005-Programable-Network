@@ -1,0 +1,31 @@
+logged in as netops
+Plan has 9 changes.
+  Create VLAN 30 (guests)
+  Create VLAN 40 (CCTV)
+  Create VLAN 50 (Door)
+  Create VLAN 60 (Windows)
+  Create ACL deny 10.16.30.0/24 to 10.16.20.0/24 (tcp/22) [guests-no-ssh]
+  Create ACL permit 10.16.10.0/24 to 10.16.20.0/24 (tcp/443) [users-to-servers-https]
+  Create ACL permit 10.16.40.0/24 to 10.16.20.0/24 (tcp/443) [cctv-to-servers-https]
+  Create ACL deny 10.16.30.0/24 to 10.16.50.0/24 (any) [guests-no-door-access]
+  Delete VLAN 99 (old-guest)
+Create VLAN 30 (guests)
+429 Too Many Requests. Retrying in 1s.
+Create VLAN 40 (CCTV)
+Create VLAN 50 (Door)
+429 Too Many Requests. Retrying in 1s.
+Create VLAN 60 (Windows)
+Create ACL deny 10.16.30.0/24 to 10.16.20.0/24 (tcp/22) [guests-no-ssh]
+429 Too Many Requests. Retrying in 1s.
+401 Unauthorized. Logging in again.
+logged in as netops
+Create ACL permit 10.16.10.0/24 to 10.16.20.0/24 (tcp/443) [users-to-servers-https]
+Create ACL permit 10.16.40.0/24 to 10.16.20.0/24 (tcp/443) [cctv-to-servers-https]
+429 Too Many Requests. Retrying in 1s.
+Create ACL deny 10.16.30.0/24 to 10.16.50.0/24 (any) [guests-no-door-access]
+Delete VLAN 99 (old-guest)
+429 Too Many Requests. Retrying in 1s.
+429 Too Many Requests. Retrying in 1s.
+401 Unauthorized. Logging in again.
+logged in as netops
+Verified. API matches intent.
