@@ -56,6 +56,6 @@ I reviewed the AI suggestions and understand the work I submitted.
 
 The chat link: [Lab 6 Assignment with Chat GPT](https://chatgpt.com/share/6af6c22b-8ef8-83ec-9c43-1af1fd7e08e7)
 
-## Week 7 Lab: In the `week7` folder
+## Week 7 Lab: [In the `week7` folder](https://github.com/AnJunli1029/WIC3005-Programable-Network/tree/b35907b1bec87d4bcfe1e6768506da8ba9c0c803/netlab/week7)
 
 ## Week 8 Lab: [netlab/week8](https://github.com/AnJunli1029/WIC3005-Programable-Network/tree/ff84db8a9e29cb6e5fafbfc80083959227a0f3ea/netlab/week8)
