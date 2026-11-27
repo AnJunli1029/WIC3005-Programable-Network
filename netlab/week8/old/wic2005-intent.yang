@@ -1,0 +1,108 @@
+module wic2005-intent {
+    yang-version 1.1;
+    namespace "urn:wic2005:intent";
+    prefix wi;
+
+    import ietf-inet-types {
+        prefix inet;
+    }
+
+    revision 2026-11-27 {
+        description "Initial revision.";
+    }
+
+    typedef local-prefix {
+        type inet:ipv4-prefix {
+            pattern '10[.]16[.].*/(1[6-9]|2[0-9]|3[0-2])' {
+                error-message "Use an IPv4 prefix within 10.16.0.0/16.";
+            }
+        }
+    }
+
+    container intent {
+        must "count(acl[action = 'permit']) >= 1" {
+            error-message "Add at least one permit ACL entry.";
+        }
+
+        must "count(acl[action = 'deny']) >= 1" {
+            error-message "Add at least one deny ACL entry.";
+        }
+
+        must "count(acl[port]) >= 1" {
+            error-message "Add at least one ACL entry with a port.";
+        }
+
+        leaf student_id_last4 {
+            type string {
+                pattern '[0-9]{2}16' {
+                    error-message "Use four student ID digits ending in 16.";
+                }
+            }
+            mandatory true;
+        }
+
+        list vlans {
+            key "id";
+            min-elements 6;
+
+            leaf id {
+                type uint16 {
+                    range "2..4094";
+                }
+            }
+
+            leaf name {
+                type string {
+                    pattern '[A-Za-z0-9_-]{1,32}';
+                }
+                mandatory true;
+            }
+        }
+
+        list acl {
+            key "description";
+            min-elements 4;
+
+            leaf description {
+                type string {
+                    length "1..max";
+                }
+            }
+
+            leaf action {
+                type enumeration {
+                    enum permit;
+                    enum deny;
+                }
+                mandatory true;
+            }
+
+            leaf src {
+                type local-prefix;
+                mandatory true;
+            }
+
+            leaf dst {
+                type local-prefix;
+                mandatory true;
+            }
+
+            leaf protocol {
+                type enumeration {
+                    enum any;
+                    enum tcp;
+                    enum udp;
+                    enum icmp;
+                }
+                default "any";
+            }
+
+            leaf port {
+                when "../protocol = 'tcp' or ../protocol = 'udp'";
+                type inet:port-number {
+                    range "1..65535";
+                }
+            }
+        }
+    }
+}

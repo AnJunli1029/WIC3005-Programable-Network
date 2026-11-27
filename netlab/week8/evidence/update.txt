@@ -1,0 +1,5 @@
+--- Revision 2: optional log ---
+COMPATIBLE
+--- Scratch copy: mandatory log ---
+scratch/wic2005-intent.yang:111: error: the mandatory node log is illegally added
+Exit code: 1

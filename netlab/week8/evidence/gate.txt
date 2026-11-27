@@ -1,0 +1,12 @@
+--- With credentials ---
+INVALID: tests/bad-vlan-4095.yaml
+libyang err : Unsatisfied range - value "4095" is out of the allowed range. (/wic2005-intent:intent/vlans/id) (line 6)
+libyang err : List instance is missing its key "id". (/wic2005-intent:intent/vlans) (line 8)
+libyang err : Too few "vlans" instances. (/wic2005-intent:intent/vlans[id='60'])
+Exit code: 1
+--- Without credentials ---
+INVALID: tests/bad-vlan-4095.yaml
+libyang err : Unsatisfied range - value "4095" is out of the allowed range. (/wic2005-intent:intent/vlans/id) (line 6)
+libyang err : List instance is missing its key "id". (/wic2005-intent:intent/vlans) (line 8)
+libyang err : Too few "vlans" instances. (/wic2005-intent:intent/vlans[id='60'])
+Exit code: 1

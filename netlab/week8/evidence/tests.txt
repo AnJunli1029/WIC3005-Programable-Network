@@ -1,0 +1,10 @@
+ok    bad-acl-description-duplicate.yaml            Duplicate instance of "acl". (/wic2005-intent:intent/acl[description='guests-no-ssh']) (li
+ok    bad-icmp-port.yaml                            When condition "../protocol = 'tcp' or ../protocol = 'udp'" not satisfied. (/wic2005-inten
+ok    bad-no-deny.yaml                              Add at least one deny ACL entry. (/wic2005-intent:intent)
+ok    bad-outside-block.yaml                        Use an IPv4 prefix within 10.16.0.0/16. (/wic2005-intent:intent/acl/src) (line 33)
+ok    bad-too-few-vlans.yaml                        Too few "vlans" instances. (/wic2005-intent:intent/vlans[id='50'])
+ok    bad-vlan-4095.yaml                            Unsatisfied range - value "4095" is out of the allowed range. (/wic2005-intent:intent/vlan
+ok    bad-vlan-duplicate.yaml                       Duplicate instance of "vlans". (/wic2005-intent:intent/vlans[id='10']) (line 64)
+ok    bad-vlan-name.yaml                            Unsatisfied pattern - "bad name" does not conform to "[A-Za-z0-9_-]{1,32}". (/wic2005-inte
+ok    good.yaml                                     
+All tests behaved as expected.
