@@ -58,4 +58,4 @@ The chat link: [Lab 6 Assignment with Chat GPT](https://chatgpt.com/share/6af6c2
 
 ## Week 7 Lab: In the `week7` folder
 
-## Week 8 Lab: netlab/week8
+## Week 8 Lab: [netlab/week8](https://github.com/AnJunli1029/WIC3005-Programable-Network/tree/ff84db8a9e29cb6e5fafbfc80083959227a0f3ea/netlab/week8)
